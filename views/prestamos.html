@@ -30,28 +30,6 @@
   <div class="container pt-5">
     <div class="row">
       <div class="col-2">
-        <!--
-        <div class="d-flex align-items-start">
-          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" id="v-pills-inicio-tab" data-bs-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Inicio</a>
-            <a class="nav-link" id="v-pills-clientes-tab" data-bs-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Clientes</a>
-            <a class="nav-link" id="v-pills-prestamos-tab" data-bs-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Prestamos</a>
-            <a class="nav-link" id="v-pills-cobros-tab" data-bs-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Cobros</a>
-            <a class="nav-link" id="v-pills-atrasos-tab" data-bs-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Atrasos</a>
-            <a class="nav-link" id="v-pills-usuarios-tab" data-bs-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Usuarios</a>
-            <a class="nav-link" id="v-pills-reportes-tab" data-bs-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Reportes</a>
-          </div>
-          <div class="tab-content" id="v-pills-tabContent">
-            <div class="tab-pane fade show active" id="v-pills-inicio" role="tabpanel" aria-labelledby="v-pills-inicio-tab">...</div>
-            <div class="tab-pane fade" id="v-pills-clientes" role="tabpanel" aria-labelledby="v-pills-clientes-tab">...</div>
-            <div class="tab-pane fade" id="v-pills-prestamos" role="tabpanel" aria-labelledby="v-pills-prestamos-tab">...</div>
-            <div class="tab-pane fade" id="v-pills-cobros" role="tabpanel" aria-labelledby="v-pills-cobros-tab">...</div>
-            <div class="tab-pane fade" id="v-pills-atrasos" role="tabpanel" aria-labelledby="v-pills-atrasos-tab">...</div>
-            <div class="tab-pane fade" id="v-pills-usuarios" role="tabpanel" aria-labelledby="v-pills-usuarios-tab">...</div>
-            <div class="tab-pane fade" id="v-pills-reportes" role="tabpanel" aria-labelledby="v-pills-reportes-tab">...</div>
-          </div>
-        </div>
-        -->
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
             <a class="nav-link " aria-current="page" href="../views/Inicio.html">Inicio</a>
@@ -63,7 +41,7 @@
             <a class="nav-link active" href="../views/prestamos.html">Prestamos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../views/cobros.html" tabindex="-1" aria-disabled="true">Cobros</a>
+            <a class="nav-link" href="../views/cobros.html">Cobros</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../views/atrasos.html">Atrasos</a>
@@ -84,21 +62,21 @@
           <div class="row">
             <div class="col-4">
               <p>N° de Cliente</p>
-              <input type="text" class="form-control" placeholder="Numero de cliente" aria-label="First name">
+              <input type="text" class="form-control" placeholder="Numero de cliente">
             </div>
             <div class="col-4">
               <p>Nombre</p>
-              <input type="text" class="form-control" placeholder="Nombre" aria-label="Last name">
+              <input type="text" class="form-control" placeholder="Nombre">
             </div>
           </div>
           <div class="row pt-2">
             <div class="col-4">
               <p>N° de Prestamo</p>
-              <input type="text" class="form-control" placeholder="Numero de prestamo" aria-label="First name">
+              <input type="text" class="form-control" placeholder="Numero de prestamo">
             </div>
             <div class="col-4">
               <p>Apellido</p>
-              <input type="text" class="form-control" placeholder="Apellido" aria-label="Last name">
+              <input type="text" class="form-control" placeholder="Apellido">
             </div>
             <div class="col-4 text-center">
               <button type="button" class="btn btn-outline-primary">Buscar</button>
@@ -113,16 +91,26 @@
           <div class="row">
             <div class="col-4">
               <p>Monto</p>
-              <input type="text" class="form-control" placeholder="Numero de cliente" aria-label="First name">
+              <input type="text" class="form-control" placeholder="Monto">
             </div>
             <div class="col-4">
               <p>Plazos</p>
-              <input type="text" class="form-control" placeholder="Nombre" aria-label="Last name">
+              <select class="form-select">
+                  <option selected>Plazo</option>
+                  <option value="1">1</option>
+                  <option value="2">3</option>
+                  <option value="3">7</option>
+              </select>
             </div>
             <div class="col-4">
               <p>Intereses</p>
-              <input type="text" class="form-control" placeholder="Nombre" aria-label="Last name">
+              <input type="text" class="form-control" placeholder="Intereses">
             </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-3">
+            <button type="button" class="btn btn-outline-primary">Guardar nuevo prestamo</button>
           </div>
         </div>
       </div>
