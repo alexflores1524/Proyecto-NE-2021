@@ -17,7 +17,8 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4 border border-dark">
-        <div class="p-5">
+        <form action="login_autentication" method="POST">
+          <div class="p-5">
             <div class="row">
                 <div class="col">
                     <img class="img-fluid" src="../img/gespres_logo.png" alt="">
@@ -26,19 +27,20 @@
             <div class="row pt-4">               
                 <div class="col">
                     <p>Usuario</p>
-                    <input type="text" class="form-control" placeholder="Usuario">
+                    <input type="text" name="user" class="form-control" placeholder="Usuario">
                 </div>
             </div>
             <div class="row pt-5">               
                 <div class="col">
                     <p>Contraseña</p>
-                    <input type="text" class="form-control" placeholder="Contraseña">
+                    <input type="password" name="password" class="form-control" placeholder="Contraseña">
                 </div>
             </div>
             <div class="pt-5 text-center">
-                <button type="button" class="btn btn-outline-primary">Iniciar sesión</button>
+                <button type="submit" class="btn btn-outline-primary">Iniciar sesión</button>
             </div>
-        </div>
+          </div>
+        </form>       
       </div>      
     </div>
   </div>

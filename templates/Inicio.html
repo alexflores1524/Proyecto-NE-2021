@@ -17,11 +17,12 @@
 <body style="background-color: #C0DAD0;">
   <div class="container">
     <nav class="navbar">
-      <a class="navbar-brand" href="../templates/Inicio.html">
+      <a class="navbar-brand" href="../Inicio.html">
         <img src="../img/gespres_logo.png" width="100" height="100" alt="">
       </a>
       <a class="navbar-brand" href="#">
-        <p class="float-end pt-5">Usuario</p>
+        <p class=" pt-5">Hola, {{usuarioGlobal}}</p>
+        <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary">Cerrar sesión</button></form>       
       </a>
     </nav>
   </div>
@@ -31,25 +32,25 @@
       <div class="col-2">
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="../templates/Inicio.html">Inicio</a>
+            <a class="nav-link active" aria-current="page" href="../Inicio.html">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="../templates/clientes.html">Clientes</a>
+            <a class="nav-link " href="../clientes.html">Clientes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../templates/prestamos.html">Prestamos</a>
+            <a class="nav-link" href="../prestamos.html">Prestamos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../templates/cobros.html" tabindex="-1">Cobros</a>
+            <a class="nav-link" href="../cobros.html" tabindex="-1">Cobros</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../templates/atrasos.html">Atrasos</a>
+            <a class="nav-link" href="../atrasos.html">Atrasos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../templates/usuarios.html">Usuarios</a>
+            <a class="nav-link" href="../usuarios.html">Usuarios</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../templates/reportes.html">Reportes</a>
+            <a class="nav-link" href="../reportes.html">Reportes</a>
           </li>
         </ul>
       </div>
