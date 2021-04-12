@@ -43,17 +43,76 @@ def logout():
 @app.route('/Inicio.html')
 def inicio():
     if 'usuarioIngresado' in session:
+        
         return render_template('Inicio.html', usuarioGlobal = session['usuarioIngresado'])
     else:
         return render_template('/login.html')
 
-@app.route('/clientes.html')
+#CLIENTES
+@app.route('/clientes.html', methods=['POST','GET'])
 def clientes():
     if 'usuarioIngresado' in session:
-        return render_template('clientes.html', usuarioGlobal = session['usuarioIngresado'])
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT * FROM clientes WHERE is_active = 1")
+        clienteResult = mycursor.fetchall()
+        mycursor.close()
+        return render_template('clientes.html', usuarioGlobal = session['usuarioIngresado'], clientes = clienteResult)
     else:
         return render_template('/login.html')
+
+@app.route('/registrar_clientes', methods=['POST','GET'])
+def registrar_clientes():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        fecha = request.form['fecha_nacimiento']
+        telefono = request.form['telefono']
+        correo = request.form['correo']
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("INSERT INTO clientes (nombre, apellido, fecha_nacimiento, telefono, email) VALUES (%s, %s, %s, %s, %s)",(nombre, apellido, fecha, telefono, correo))
+        mysql.connection.commit()
+        mycursor.close()
+        print(nombre + apellido + fecha + telefono + correo)
+        return redirect(url_for('clientes'))
     
+@app.route('/obtener_cliente/<id>', methods=['POST','GET'])
+def obtener_cliente(id):
+    mycursor = mysql.connection.cursor()
+    mycursor.execute("SELECT * FROM clientes WHERE idCliente = %s", (id))
+    cliente = mycursor.fetchall()
+    mycursor.close()
+    return render_template('clientes_editar.html', cliente = cliente[0])
+
+@app.route('/editar_clientes/<id>', methods=['POST'])
+def editar_clientes(id):
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        fecha = request.form['fecha_nacimiento']
+        telefono = request.form['telefono']
+        correo = request.form['correo']
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("""UPDATE clientes
+                        SET 
+                        nombre = %s,
+                        apellido = %s,
+                        fecha_nacimiento = %s,
+                        telefono = %s,
+                        email = %s               
+                        WHERE idCliente = %s""", (nombre, apellido, fecha, telefono, correo, id))
+        mysql.connection.commit()
+        mycursor.close()
+        return redirect(url_for('clientes'))
+
+
+@app.route('/borrar_clientes/<id>')
+def borrar_clientes(id):
+    mycursor = mysql.connection.cursor()
+    mycursor.execute("UPDATE clientes SET is_active = 0 WHERE clientes.idCliente = %s", (id))
+    mysql.connection.commit()
+    mycursor.close()
+    return redirect(url_for('clientes'))
+
 @app.route('/prestamos.html')
 def prestamos():
     if 'usuarioIngresado' in session:
