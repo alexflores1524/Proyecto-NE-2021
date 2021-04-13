@@ -70,4 +70,14 @@ Ejemplo INSERT
 INSERT INTO `usuarios` (`idUser`, `usuario`, `password`, `is_active`, `create_at`, `update_at`) VALUES (NULL, 'juan@git.com', '12345', '1', current_timestamp(), current_timestamp());
 
 INSERT INTO `clientes` (`idCliente`, `nombre`, `apellido`, `fecha_nacimiento`, `telefono`, `email`, `is_active`, `create_at`, `update_at`) VALUES (NULL, 'Raul', 'Ramirez', '1984-04-07', '3300112244', 'hugo@git.com', '1', current_timestamp(), current_timestamp());
+
+SELECT 
+	clientes.nombre,
+    clientes.apellido,
+    prestamos.abono,
+    prestamos.restante
+FROM prestamos
+INNER JOIN clientes on clientes.idCliente = prestamos.idCliente
+WHERE prestamos.idPrestamo = 1
+
 */
