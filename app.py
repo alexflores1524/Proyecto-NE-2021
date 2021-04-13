@@ -11,6 +11,7 @@ app.config['MYSQL_PASSWORD']= ''
 app.config['MYSQL_DB']= 'gespres_flask'
 mysql = MySQL(app) 
 
+#LOGIN
 @app.route('/')
 def login():
     if 'usuarioIngresado' in session:
@@ -26,6 +27,7 @@ def login_autentication():
         mycursor = mysql.connection.cursor()
         mycursor.execute("SELECT * FROM usuarios WHERE usuario = %s", [user])
         userResult = mycursor.fetchall()
+        print(userResult)
         mycursor.close()
         if userResult:
             if password == userResult[0][2]:
@@ -72,7 +74,6 @@ def registrar_clientes():
         mycursor.execute("INSERT INTO clientes (nombre, apellido, fecha_nacimiento, telefono, email) VALUES (%s, %s, %s, %s, %s)",(nombre, apellido, fecha, telefono, correo))
         mysql.connection.commit()
         mycursor.close()
-        print(nombre + apellido + fecha + telefono + correo)
         return redirect(url_for('clientes'))
     
 @app.route('/obtener_cliente/<id>', methods=['POST','GET'])

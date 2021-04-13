@@ -52,88 +52,105 @@
             </li>
         </ul>
     </div>
+
+    <!--INFORMACION PRESTAMO-->
     <div class="col-1"></div>
       <div class="col-7">
         <p>Información del cliente</p>
         <div class="p-3 border border-dark rounded">
-            <div class="row">               
-                <div class="col-4">
-                    <p>N° de Prestamo</p>
-                    <input type="text" class="form-control" placeholder="Numero de prestamo">
-                </div>
-                <div class="col-4">
-                    <p>Nombre</p>
-                    <input type="text" class="form-control" placeholder="Nombre">
-                </div>
+          <form action="buscar_prestamo" method="POST">
+            <div class="row">
+              <div class="col-4">
+                <p>Nombre del cliente</p>
+                <input type="text" class="form-control" value="{{prestamo.1}}" disabled>
+              </div>
+              <div class="col-4">
+                <p>Apellido del cliente</p>
+                <input type="text" class="form-control" value="{{prestamo.2}}" disabled>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-3">
+                <div class="col-4"></div>
+                <p>Numero de prestamo</p>
+                <div class="col-7">
+                  <input type="text" name="idPrestamo" class="form-control" value="{{prestamo.0}}" placeholder="N°Pres">
+                </div>              
+              </div>             
             </div>
-            <div class="row pt-2">
-                <div class="col-4"></div>            
-                <div class="col-4">
-                    <p>Apellido</p>
-                    <input type="text" class="form-control" placeholder="Apellido">
-                </div>
-                <div class="col-3 text-center">
-                    <button type="button" class="btn btn-outline-primary">Buscar</button>
-                </div>
+            <div class="row pt-4">  
+              <div class="col-4">
+                <p>Abono</p>
+                <input type="text" class="form-control" value="{{prestamo.3}}" disabled>
+              </div>
+              <div class="col-4">
+                <p>Restante</p>
+                <input type="text" class="form-control" value="{{prestamo.4}}" disabled>
+              </div>            
+              <div class="col-4 text-center">
+                <button type="submit" class="btn btn-outline-primary">Buscar</button>
+              </div>
             </div>
+          </form>
         </div>
       </div>
+
+      <!--PLAZOS-->
       <div class="col-3"></div>
-      <div class="col-6 pb-3">
-        <p class="text-center">Información del prestamo</p>
+      <div class="col-6 pb-3 mt-5">
+        <p class="text-center">Plazos del prestamo</p>
         <div class="p-3 border border-dark rounded">
             <div class="row">               
                 <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">N°</th>
+                        <th scope="col">N°Plazo</th>
                         <th scope="col">Cliente</th>
-                        <th scope="col">Fecha Plazo</th>
                         <th scope="col">Monto</th>
+                        <th scope="col">Fecha plazo</th>
                       </tr>
                     </thead>
                     <tbody>
+                      {%for plazo in plazos%}
                       <tr>
-                        <th scope="row">1</th>
-                        <td>02145</td>
-                        <td>11/02/21</td>
-                        <td>$4560.00</td>
+                          <td>{{plazo.0}}</td>
+                          <td>{{plazo.1}}</td>
+                          <td>{{plazo.2}}</td>
+                          <td>{{plazo.3}}</td>
                       </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>32547</td>
-                        <td>25/02/21</td>
-                        <td>$4560.00</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>69854</td>
-                        <td>11/03/21</td>
-                        <td>$4560.00</td>
-                      </tr>
+                      {%endfor%}        
                     </tbody>
                   </table>
             </div>
         </div>
       </div>
+
+      <!--COBROS-->
       <div class="col-3 p-5">
-        <div class="row">               
+        <form action="registrar_cobro" method="POST">
+          <div class="row">               
+              <div class="col">
+                  <p>Numero plazo</p>
+                  <input type="text" name="idPlazo" class="form-control" placeholder="N° Plazo">
+              </div>
+          </div>
+          <div class="row pt-3">               
             <div class="col">
                 <p>Fecha</p>
-                <input type="text" class="form-control" placeholder="Fecha">
+                <input type="date" name="fechaPago" class="form-control">
             </div>
-        </div>
-        <div class="row pt-3">               
-            <div class="col">
-                <p>Monto</p>
-                <input type="text" class="form-control" placeholder="Monto">
-            </div>
-        </div>
-        <div class="row pt-3">               
-            <div class="col">
-                <button type="button" class="btn btn-outline-primary">Pagar</button>
-            </div>
-        </div>
+          </div>
+          <div class="row pt-3">               
+              <div class="col">
+                  <p>Monto</p>
+                  <input type="text" name="monto" class="form-control" class="form-control" placeholder="Monto">
+              </div>
+          </div>
+          <div class="row pt-3">               
+              <div class="col">
+                  <button type="submit" class="btn btn-outline-primary">Pagar</button>
+              </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

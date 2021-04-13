@@ -57,62 +57,128 @@
       </div>
       <div class="col-1"></div>
 
+      <!-- BUSCADOR DE CLIENTES-->
       <div class="col-9">
         <p>Información del cliente</p>
         <div class="p-3 border border-dark rounded">
-          <div class="row">
-            <div class="col-4">
-              <p>N° de Cliente</p>
-              <input type="text" class="form-control" placeholder="Numero de cliente">
+          <form action="buscar_cliente_prestamos" method="POST">
+            <div class="row">
+              <div class="col-4">
+                <p>Nombre</p>
+                <input type="text" class="form-control" value="{{cliente.1}}" disabled>
+              </div>
+              <div class="col-4">
+                <p>Apellido</p>
+                <input type="text" class="form-control" value="{{cliente.2}}" disabled>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-3">
+                <div class="col-4"></div>
+                <p>Numero de cliente</p>
+                <div class="col-7">
+                  <input type="text" name="idCliente" class="form-control" value="{{cliente.0}}" placeholder="N°Cliente">
+                </div>              
+              </div>             
             </div>
-            <div class="col-4">
-              <p>Nombre</p>
-              <input type="text" class="form-control" placeholder="Nombre">
+            <div class="row pt-4">  
+              <div class="col-8"></div>            
+              <div class="col-4 text-center">
+                <button type="submit" class="btn btn-outline-primary">Buscar</button>
+              </div>
             </div>
-          </div>
-          <div class="row pt-2">
-            <div class="col-4">
-              <p>N° de Prestamo</p>
-              <input type="text" class="form-control" placeholder="Numero de prestamo">
-            </div>
-            <div class="col-4">
-              <p>Apellido</p>
-              <input type="text" class="form-control" placeholder="Apellido">
-            </div>
-            <div class="col-4 text-center">
-              <button type="button" class="btn btn-outline-primary">Buscar</button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
+      <!-- ALTA DE PRESTAMOS-->
       <div class="col-3"></div>
       <div class="col-9 pb-3">
-        <p>Información del prestamo</p>
+        <p>Alta de prestamos</p>
         <div class="p-3 border border-dark rounded">
+        <form action="registrar_prestamos" method="POST">
           <div class="row">
             <div class="col-4">
-              <p>Monto</p>
-              <input type="text" class="form-control" placeholder="Monto">
+              <p>Id cliente</p>
+              <input type="text" name="idCliente" class="form-control" placeholder="Id del cliente">
             </div>
             <div class="col-4">
-              <p>Plazos</p>
-              <select class="form-select">
-                  <option selected>Plazo</option>
-                  <option value="1">1</option>
-                  <option value="2">3</option>
-                  <option value="3">7</option>
-              </select>
+              <p>Cantidad</p>
+              <input type="text" class="form-control" name="cantidadPrestamo" placeholder="Cantidad a prestar">
             </div>
             <div class="col-4">
-              <p>Intereses</p>
-              <input type="text" class="form-control" placeholder="Intereses">
+              <p>Fecha del prestamo</p>
+              <input type="date" name="fechaPrestamo" class="form-control">
             </div>
           </div>
+          <div class="row mt-4">
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-outline-primary">Guardar nuevo prestamo</button>
+            </div>
+          </div>
+        </form>
         </div>
-        <div class="row mt-3">
-          <div class="col-3">
-            <button type="button" class="btn btn-outline-primary">Guardar nuevo prestamo</button>
+      </div>
+    </div>
+
+    <!-- TABLA DE PRESTAMOS-->
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-9 mt-5">
+        <p>Tabla de clientes activos</p>
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Id Cliente</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Fecha Prestamo</th>
+                    <th scope="col">Abono</th>
+                    <th scope="col">Restante</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for prestamo in prestamos%}
+                <tr>
+                    <td>{{prestamo.0}}</td>
+                    <td>{{prestamo.1}}</td>
+                    <td>{{prestamo.2}}</td>
+                    <td>{{prestamo.3}}</td>
+                    <td>{{prestamo.4}}</td>
+                    <td>{{prestamo.5}}</td>
+                </tr>
+                {%endfor%}                       
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ALTA DE PLAZOS-->
+
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-9 pb-3">
+        <p>Alta de plazos</p>
+        <div class="p-3 border border-dark rounded">
+        <form action="registrar_plazos" method="POST">
+          <div class="row">
+            <div class="col-4">
+              <p>Id prestamo</p>
+              <input type="text" name="idPrestamo" class="form-control" placeholder="Id del prestamo">
+            </div>
+            <div class="col-4">
+              <p>Monto</p>
+              <input type="text" class="form-control" name="subtotal" placeholder="Monto">
+            </div>
+            <div class="col-4">
+              <p>Fecha del plazo</p>
+              <input type="date" name="fechaPlazo" class="form-control">
+            </div>
           </div>
+          <div class="row mt-4">
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-outline-primary">Guardar plazo</button>
+            </div>
+          </div>
+        </form>
         </div>
       </div>
     </div>
