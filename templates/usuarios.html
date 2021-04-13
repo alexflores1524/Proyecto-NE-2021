@@ -57,21 +57,26 @@
             </div>
             <div class="col-1"></div>
             <div class="col-4">
-                <p>Registro de cliente</p>
-                <div class="p-3 border border-dark rounded">
-                    <div class="row">
-                        <div class="col">
-                            <p>Usuario</p>
-                            <input type="text" class="form-control" placeholder="Usuario">
+                <p>Registro de usuario</p>
+                <form action="registrar_usuarios" method="POST">
+                    <div class="p-3 border border-dark rounded">
+                        <div class="row">
+                            <div class="col">
+                                <p>Usuario</p>
+                                <input type="text" name="usuario" class="form-control" placeholder="Usuario">
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col">
+                                <p>Contraseña</p>
+                                <input type="text" name="password" class="form-control" placeholder="*****">
+                            </div>
                         </div>
                     </div>
-                    <div class="row pt-2">
-                        <div class="col">
-                            <p>Contraseña</p>
-                            <input type="text" class="form-control" placeholder="*****">
-                        </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-outline-primary mt-3">Agregar</button>
                     </div>
-                </div>
+                </form>
             </div>
 
             <div class="col-4 mt-5">
@@ -79,27 +84,23 @@
                 <table class="table ">
                     <thead>
                         <tr>
-                            <th scope="col">Id</th>
+                            <th scope="col">#</th>
                             <th scope="col">Usuario</th>
-                            <th scope="col">Contraseña</th>
+                            <th scope="col">Password</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {%for usuario in usuarios%}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Juan</td>
-                            <td>65478</td>
+                            <td>{{usuario.0}}</td>
+                            <td>{{usuario.1}}</td>
+                            <td>{{usuario.2}}</td>
+                            <td>
+                                <a href="/obtener_usuario/{{usuario.0}}">Editar</a>
+                                <a href="/borrar_usuario/{{usuario.0}}">Borrar</a>
+                            </td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Isaac</td>
-                            <td>98765</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Francisco</td>
-                            <td>12345</td>
-                        </tr>
+                        {%endfor%}                       
                     </tbody>
                 </table>
             </div>
@@ -107,22 +108,7 @@
 
 
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-3"></div>
-
-            <div class="col-4">
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col">
-                        <button type="button" class="btn btn-outline-primary mt-3 ">Limpiar</button>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-outline-primary mt-3">Agregar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    
     </div>
     </div>
 
