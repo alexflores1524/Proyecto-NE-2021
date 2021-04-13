@@ -11,7 +11,8 @@ app.config['MYSQL_PASSWORD']= ''
 app.config['MYSQL_DB']= 'gespres_flask'
 mysql = MySQL(app) 
 
-#LOGIN
+#**************************LOGIN**************************
+
 @app.route('/')
 def login():
     if 'usuarioIngresado' in session:
@@ -49,8 +50,9 @@ def inicio():
         return render_template('Inicio.html', usuarioGlobal = session['usuarioIngresado'])
     else:
         return render_template('/login.html')
+#************************************************************
 
-#CLIENTES
+#**************************CLIENTES**************************
 @app.route('/clientes.html', methods=['POST','GET'])
 def clientes():
     if 'usuarioIngresado' in session:
@@ -114,19 +116,137 @@ def borrar_clientes(id):
     mycursor.close()
     return redirect(url_for('clientes'))
 
+#*************************************************************
+#**************************PRESTAMOS**************************
 @app.route('/prestamos.html')
 def prestamos():
     if 'usuarioIngresado' in session:
-        return render_template('prestamos.html', usuarioGlobal = session['usuarioIngresado'])
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT * FROM prestamos WHERE is_active = 1")
+        prestamoResult = mycursor.fetchall()
+        mycursor.close()
+        cliente = ('','','')
+        return render_template('prestamos.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente, prestamos = prestamoResult)
     else:
         return render_template('/login.html')    
+
+@app.route('/buscar_cliente_prestamos', methods=['POST','GET'])
+def buscar_cliente_prestamos():
+    if request.method == 'POST':
+        id = request.form['idCliente']
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT * FROM clientes WHERE idCliente = %s", (id))
+        cliente = mycursor.fetchall()
+        mycursor.execute("SELECT * FROM prestamos WHERE is_active = 1")
+        prestamoResult = mycursor.fetchall()
+        mycursor.close()
+        if cliente:
+            return render_template('prestamos.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente[0], prestamos = prestamoResult)
+        else:
+            cliente = ('','No existente','No existente')
+            return render_template('prestamos.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente, prestamos = prestamoResult)
+
+@app.route('/registrar_prestamos', methods=['POST','GET'])
+def registrar_prestamos():
+    if request.method == 'POST':
+        idCliente = request.form['idCliente']
+        cantidadPrestamo = request.form['cantidadPrestamo']
+        fechaPrestamo = request.form['fechaPrestamo']
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("INSERT INTO prestamos (idCliente, cantidad, fecha_prestamo, abono, restante) VALUES (%s, %s, %s, 0, %s)",(idCliente, cantidadPrestamo, fechaPrestamo, cantidadPrestamo))
+        mysql.connection.commit()
+        mycursor.close()
+        return redirect(url_for('prestamos'))
+
+@app.route('/registrar_plazos', methods=['POST','GET'])
+def registrar_plazos():
+    if request.method == 'POST':
+        idPrestamo = request.form['idPrestamo']
+        subtotal = request.form['subtotal']
+        fechaPlazo = request.form['fechaPlazo']
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("INSERT INTO plazos (idPrestamo, subtotal, fecha_pago) VALUES (%s, %s, %s)",(idPrestamo, subtotal, fechaPlazo))
+        mysql.connection.commit()
+        mycursor.close()
+        return redirect(url_for('prestamos'))
+
+#**************************COBROS**************************
 
 @app.route('/cobros.html')
 def cobros():
     if 'usuarioIngresado' in session:
-        return render_template('cobros.html', usuarioGlobal = session['usuarioIngresado'])
+        prestamo = ('','','','','','','')
+        plazos = ('','','','')
+        return render_template('cobros.html', usuarioGlobal = session['usuarioIngresado'], prestamo = prestamo, plazos = plazos)
     else:
-        return render_template('/login.html')  
+        return render_template('/login.html')
+
+@app.route('/buscar_prestamo', methods=['POST','GET'])
+def buscar_prestamo():
+    if request.method == 'POST':
+        id = request.form['idPrestamo']
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("""SELECT
+                                prestamos.idPrestamo,
+                                clientes.nombre,
+                                clientes.apellido,
+                                prestamos.abono,
+                                prestamos.restante
+                            FROM prestamos
+                            INNER JOIN clientes on clientes.idCliente = prestamos.idCliente
+                            WHERE prestamos.idPrestamo = %s """, (id))
+        prestamo = mycursor.fetchall()       
+        if prestamo:
+            mycursor.execute("SELECT * FROM plazos WHERE idPrestamo = %s AND is_active = 1", (id))
+            plazos = mycursor.fetchall()
+            mycursor.close()
+            print(plazos[0])
+            return render_template('cobros.html', usuarioGlobal = session['usuarioIngresado'], prestamo = prestamo[0], plazos = plazos)
+        else:
+            mycursor.close()
+            plazos = ('','','','')
+            prestamo = ('','No existente','No existente','No existente','No existente')
+            return render_template('cobros.html', usuarioGlobal = session['usuarioIngresado'], prestamo = prestamo, plazos = plazos)
+
+@app.route('/registrar_cobro', methods=['POST','GET'])
+def registrar_cobro():
+    if request.method == 'POST':
+        idPlazo = request.form['idPlazo']
+        fechaPago = request.form['fechaPago']
+        monto = float(request.form['monto'])
+        mycursor = mysql.connection.cursor()
+        
+        mycursor.execute("SELECT idPrestamo FROM plazos WHERE idPlazo = %s", (idPlazo))
+        plazo = mycursor.fetchall()
+        idPrestamo = plazo[0]
+        mycursor.execute("INSERT INTO cobros (idPrestamo, idPlazo, cantidad, fecha_cobro) VALUES (%s, %s, %s, %s)",(idPrestamo, idPlazo, monto, fechaPago))
+        mysql.connection.commit()
+        
+        mycursor.execute("UPDATE plazos SET is_active = 0 WHERE idPlazo = %s", (idPlazo))
+        mysql.connection.commit()
+        
+        mycursor.execute("SELECT abono,restante FROM prestamos WHERE idPrestamo = %s", (idPrestamo))
+        prestamo = mycursor.fetchall()
+        abono = prestamo[0][0]
+        restante = prestamo[0][1]
+        abonoFinal = abono + monto
+        restanteFinal = restante - monto
+        
+        if restanteFinal == 0:
+            mycursor.execute("UPDATE prestamos SET is_active = 0, restante = %s, abono = %s WHERE idPrestamo = %s", (restanteFinal, abonoFinal, idPrestamo))
+            mysql.connection.commit()
+            mycursor.close()
+            return redirect(url_for('cobros'))
+        else:
+            mycursor.execute("UPDATE prestamos SET restante = %s, abono = %s WHERE idPrestamo = %s", (restanteFinal,   abonoFinal, idPrestamo))
+            mysql.connection.commit()
+            mycursor.close()
+            return redirect(url_for('cobros'))
+
+#*************************************************************
+
+#**************************ATRASOS***************************
+
 
 @app.route('/atrasos.html')
 def atrasos():
@@ -134,14 +254,68 @@ def atrasos():
         return render_template('atrasos.html', usuarioGlobal = session['usuarioIngresado'])
     else:
         return render_template('/login.html')
-    
 
+#*************************************************************
+
+#**************************USUARIOS**************************
 @app.route('/usuarios.html')
 def usuarios():
     if 'usuarioIngresado' in session:
-        return render_template('usuarios.html', usuarioGlobal = session['usuarioIngresado'])
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT * FROM usuarios WHERE is_active = 1")
+        usuarioResult = mycursor.fetchall()
+        print (usuarioResult)
+        mycursor.close()
+        return render_template('usuarios.html', usuarioGlobal = session['usuarioIngresado'], usuarios = usuarioResult)
     else:
-        return render_template('/login.html')   
+        return render_template('/login.html') 
+
+
+@app.route('/registrar_usuarios', methods=['POST','GET'])
+def registrar_usuarios():
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        password = request.form['password']
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("INSERT INTO usuarios (usuario, password) VALUES (%s, %s)",(usuario, password))
+        mysql.connection.commit()
+        mycursor.close()
+        print(usuario + password)
+        return redirect(url_for('usuarios'))
+    
+@app.route('/obtener_usuario/<id>', methods=['POST','GET'])
+def obtener_usuario(id):
+    mycursor = mysql.connection.cursor()
+    mycursor.execute("SELECT * FROM usuarios WHERE idUser = %s", (id))
+    usuario = mycursor.fetchall()
+    mycursor.close()
+    return render_template('usuario_editar.html', usuario = usuario[0])
+    
+@app.route('/editar_usuarios/<id>', methods=['POST'])
+def editar_usuarios(id):
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        password = request.form['password']
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("""UPDATE usuarios
+                        SET 
+                        usuario = %s,
+                        password = %s           
+                        WHERE idUser = %s""", (usuario, password,id))
+        mysql.connection.commit()
+        mycursor.close()
+        return redirect(url_for('usuarios'))
+
+@app.route('/borrar_usuario/<id>')
+def borrar_usuarios(id):
+    mycursor = mysql.connection.cursor()
+    mycursor.execute("UPDATE usuarios SET is_active = 0 WHERE usuarios.idUser = %s", (id))
+    mysql.connection.commit()
+    mycursor.close()
+    return redirect(url_for('usuarios'))
+
+#**************************************************************
+#****************************REPORTES************************
 
 @app.route('/reportes.html')
 def reportes():
@@ -149,6 +323,9 @@ def reportes():
         return render_template('usuarios.html', usuarioGlobal = session['usuarioIngresado'])
     else:
         return render_template('/login.html')
+
+#**************************************************************
+
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
