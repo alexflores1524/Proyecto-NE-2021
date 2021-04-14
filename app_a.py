@@ -30,7 +30,7 @@ def login_autentication():
         if userResult:
             if password == userResult[0][2]:
                 session['usuarioIngresado'] = request.form['user']
-                return render_template('Inicio.html', usuarioGlobal = session['usuarioIngresado'])
+                return redirect(url_for('inicio'))
         else:
             return redirect(url_for('login'))
     return redirect(url_for('login'))
