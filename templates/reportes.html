@@ -57,13 +57,17 @@
             </div>
             <div class="col-1"></div>
             <div class="col-3 text-center">
-                <button type="button" class="btn btn-outline-primary mt-3 ">Reporte de prestamos</button>
+                <button type="button" class="btn btn-outline-primary mt-3 ">Reporte de cobros</button>
+                <!--SELECT p.idPrestamo, cl.nombre, c.cantidad, c.fecha_cobro FROM cobros AS c INNER JOIN prestamos AS p ON p.idPrestamo = c.idPrestamo INNER JOIN clientes AS cl ON cl.idCliente = p.idCliente WHERE c.fecha_cobro BETWEEN '2021-04-01' AND '2021-04-30' -->
             </div>
             <div class="col-3 text-center">
                 <button type="button" class="btn btn-outline-primary mt-3 ">Historial clientes</button>
+                <!--SELECT c.nombre, p.cantidad, p.fecha_prestamo, p.abono, p.restante FROM prestamos as p inner JOIN clientes AS c ON c.idCliente = p.idCliente-->
             </div>
             <div class="col-3 text-center">
                 <button type="button" class="btn btn-outline-primary mt-3 ">Prestamos rango de fecha</button>
+                <!--SELECT * FROM prestamos where is_active = 0 AND fecha_prestamo BETWEEN '2021-04-01' AND '2021-04-30'
+-->
             </div>
         </div>
     </div>

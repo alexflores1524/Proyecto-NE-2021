@@ -43,8 +43,21 @@ def logout():
 @app.route('/Inicio.html')
 def inicio():
     if 'usuarioIngresado' in session:
-        
-        return render_template('Inicio.html', usuarioGlobal = session['usuarioIngresado'])
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT COUNT(nombre) FROM clientes WHERE is_active = 1")
+        cliente = mycursor.fetchall()
+        mycursor.execute("SELECT COUNT(idPrestamo) FROM prestamos WHERE is_active = 1")
+        prestamo = mycursor.fetchall()
+        mycursor.execute("SELECT SUM(cantidad) FROM cobros")
+        cobro = mycursor.fetchall()
+        mycursor.execute("SELECT SUM(restante) FROM prestamos")
+        restante = mycursor.fetchall()
+        mycursor.close()
+        if cliente:
+            return render_template('inicio.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente[0],prestamo = prestamo[0], cobro = cobro[0], restante = restante[0])
+        else:
+            cliente = ('','No existente','No existente')
+            return render_template('inicio.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente, prestamos = prestamoResult)
     else:
         return render_template('/login.html')
 
@@ -141,7 +154,6 @@ def usuarios():
         mycursor = mysql.connection.cursor()
         mycursor.execute("SELECT * FROM usuarios WHERE is_active = 1")
         usuarioResult = mycursor.fetchall()
-        print (usuarioResult)
         mycursor.close()
         return render_template('usuarios.html', usuarioGlobal = session['usuarioIngresado'], usuarios = usuarioResult)
     else:
@@ -198,6 +210,23 @@ def reportes():
         return render_template('usuarios.html', usuarioGlobal = session['usuarioIngresado'])
     else:
         return render_template('/login.html')
+
+
+###INICIO
+@app.route('/contar_cliente', methods=['POST','GET'])
+def contar_cliente():
+    if request.method == 'POST':
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT COUNT(nombre) FROM clientes WHERE is_active = 1")
+        cliente = mycursor.fetchall()
+        mycursor.close()
+        if cliente:
+            return render_template('inicio.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente[0])
+        else:
+            cliente = ('','No existente','No existente')
+            return render_template('inicio.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente, prestamos = prestamoResult)
+
+
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
