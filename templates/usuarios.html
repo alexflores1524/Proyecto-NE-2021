@@ -79,7 +79,7 @@
                 </form>
             </div>
 
-            <div class="col-4 mt-5">
+            <div class="col-5 mt-5">
                 <h3>Usuarios Activos</h3>
                 <div class="p-3 border border-dark rounded">
                 <table class="table table-hover ">
@@ -96,10 +96,10 @@
                         <tr>
                             <td>{{usuario.0}}</td>
                             <td>{{usuario.1}}</td>
-                            <td>{{usuario.2}}</td>
+                            <td>*******</td>
                             <td>
-                                <a href="/obtener_usuario/{{usuario.0}}">Editar</a>
-                                <a href="/borrar_usuario/{{usuario.0}}">Borrar</a>
+                                <a href="/obtener_usuario/{{usuario.0}}" class="btn btn-outline-primary mb-1">Editar</a>
+                                <a href="/borrar_usuario/{{usuario.0}}" class="btn btn-outline-primary">Borrar</a>
                             </td>
                         </tr>
                         {%endfor%}                       
@@ -108,8 +108,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
     
     </div>

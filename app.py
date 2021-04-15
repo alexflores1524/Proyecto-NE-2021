@@ -384,7 +384,8 @@ def reporte_cobros_imprimir():
             if reportes:
                 return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
             else:
-                return redirect(url_for('reporte_cobros'))
+                reportes = ('','','','','','','','')
+                return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
         else:
             return redirect(url_for('reportes'))
     else:
@@ -444,7 +445,8 @@ def reporte_prestamos_imprimir():
             if reportes:
                 return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
             else:
-                return redirect(url_for('reporte_prestamos'))
+                reportes = ('','','','','','','','')
+                return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
         else:
             return redirect(url_for('reportes'))
     else:
