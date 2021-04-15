@@ -16,14 +16,14 @@
 </head>
 
 <body style="background-color: #C0DAD0;">
-    <div class="container">
+    <div class="container" style="height: 145px;">
         <nav class="navbar">
             <a class="navbar-brand" href="../Inicio.html">
-                <img src="../static/gespres_logo.png" width="100" height="100" alt="">
+                <img src="../static/gespres_logo.png" width="150" height="150" alt="">
             </a>
             <a class="navbar-brand disable" href="#">
                 <p class=" pt-5">Hola, {{usuarioGlobal}}</p>
-                <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary">Cerrar sesión</button></form> 
+                <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary"><i class="bi bi-door-open-fill"></i></button></form>       
             </a>
           </nav>
     </div>
@@ -57,9 +57,9 @@
             </div>
             <div class="col-1"></div>
             <div class="col-4">
-                <p>Registro de usuario</p>
+                <h3>Registro de usuario</h3>
                 <form action="registrar_usuarios" method="POST">
-                    <div class="p-3 border border-dark rounded">
+                    <div class="p-3 border border-dark rounded" style="background-color: #151E3D; color: white;">
                         <div class="row">
                             <div class="col">
                                 <p>Usuario</p>
@@ -72,21 +72,23 @@
                                 <input type="text" name="password" class="form-control" placeholder="*****">
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <button type="submit" class="btn btn-outline-primary mt-3">Agregar</button>
+                        <div class="col">
+                            <button type="submit" class="btn btn-outline-light mt-3">Agregar</button>
+                        </div>
                     </div>
                 </form>
             </div>
 
             <div class="col-4 mt-5">
-                <p>Usuarios Activos</p>
-                <table class="table ">
+                <h3>Usuarios Activos</h3>
+                <div class="p-3 border border-dark rounded">
+                <table class="table table-hover ">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Usuario</th>
                             <th scope="col">Password</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,6 +105,7 @@
                         {%endfor%}                       
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
 

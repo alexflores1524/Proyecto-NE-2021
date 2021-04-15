@@ -16,14 +16,14 @@
 </head>
 
 <body style="background-color: #C0DAD0;">
-    <div class="container">
+    <div class="container" style="height: 145px;">
         <nav class="navbar">
             <a class="navbar-brand" href="../Inicio.html">
-                <img src="../static/gespres_logo.png" width="100" height="100" alt="">
+                <img src="../static/gespres_logo.png" width="150" height="150" alt="">
             </a>
             <a class="navbar-brand disable" href="#">
                 <p class=" pt-5">Hola, {{usuarioGlobal}}</p>
-                <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary">Cerrar sesión</button></form> 
+                <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary"><i class="bi bi-door-open-fill"></i></button></form>       
             </a>
         </nav>
     </div>
@@ -57,9 +57,9 @@
             </div>
             <div class="col-1"></div>
             <div class="col-9">
-                <p class="text-center" >Reporte de cobros realizados</p>
+                <h3 class="text-center" >Reporte de cobros realizados</h3>
                 <div class="p-3 border border-dark rounded">
-                    <table class="table ">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">N° de Prestamo</th>

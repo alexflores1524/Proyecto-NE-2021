@@ -13,14 +13,14 @@
     <title>Cobros</title>
   </head>
   <body style="background-color: #C0DAD0;">
-    <div class="container">
+    <div class="container" style="height: 145px;">
       <nav class="navbar">
         <a class="navbar-brand" href="../Inicio.html">
-          <img src="../static/gespres_logo.png" width="100" height="100" alt="">
+          <img src="../static/gespres_logo.png" width="150" height="150" alt="">
         </a>
         <a class="navbar-brand disable" href="#">
           <p class=" pt-5">Hola, {{usuarioGlobal}}</p>
-          <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary">Cerrar sesión</button></form> 
+          <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary"><i class="bi bi-door-open-fill"></i></button></form>       
         </a>
       </nav>
   </div>
@@ -55,9 +55,9 @@
 
     <!--INFORMACION PRESTAMO-->
     <div class="col-1"></div>
-      <div class="col-7">
-        <p>Información del cliente</p>
-        <div class="p-3 border border-dark rounded">
+      <div class="col-9">
+        <h3>Información del cliente</h3>
+        <div class="p-3 border border-dark rounded" style="background-color: #151E3D; color: white;">
           <form action="buscar_prestamo" method="POST">
             <div class="row">
               <div class="col-4">
@@ -87,7 +87,7 @@
                 <input type="text" class="form-control" value="{{prestamo.4}}" disabled>
               </div>            
               <div class="col-4 text-center">
-                <button type="submit" class="btn btn-outline-primary">Buscar</button>
+                <button type="submit" class="btn btn-outline-light">Buscar</button>
               </div>
             </div>
           </form>
@@ -97,10 +97,10 @@
       <!--PLAZOS-->
       <div class="col-3"></div>
       <div class="col-6 pb-3 mt-5">
-        <p class="text-center">Plazos del prestamo</p>
-        <div class="p-3 border border-dark rounded">
+        <h3 class="text-center">Plazos del prestamo</h3>
+        <div class="p-3 border border-dark rounded" >
             <div class="row">               
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                       <tr>
                         <th scope="col">N°Plazo</th>
@@ -125,7 +125,7 @@
       </div>
 
       <!--COBROS-->
-      <div class="col-3 p-5">
+      <div class="col-3 p-5border border-dark rounded" style="background-color: #151E3D; color: white;">
         <form action="registrar_cobro" method="POST">
           <div class="row">               
               <div class="col">
@@ -147,7 +147,7 @@
           </div>
           <div class="row pt-3">               
               <div class="col">
-                  <button type="submit" class="btn btn-outline-primary">Pagar</button>
+                  <button type="submit" class="btn btn-outline-light">Pagar</button>
               </div>
           </div>
         </form>

@@ -15,14 +15,14 @@
 </head>
 
 <body style="background-color: #C0DAD0;">
-  <div class="container">
+  <div class="container" style="height: 145px;">
     <nav class="navbar">
       <a class="navbar-brand" href="../Inicio.html">
-        <img src="../static/gespres_logo.png" width="100" height="100" alt="">
+        <img src="../static/gespres_logo.png" width="150" height="150" alt="">
       </a>
       <a class="navbar-brand" href="#">
         <p class=" pt-5">Hola, {{usuarioGlobal}}</p>
-        <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary">Cerrar sesión</button></form>       
+        <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary"><i class="bi bi-door-open-fill"></i></button></form>       
       </a>
     </nav>
   </div>
@@ -60,11 +60,11 @@
             
           <div class="row">
             <div class="col text-center">
-              <i class="bi bi-person-circle"></i>
+              <i  class="bi bi-person-circle" style="font-size: 22px;"></i>
             </div>
             <div class="col-9">
-              <p>Cantidad de clientes</p>
-              <p>{{cliente.0}}</p>
+              <h4 class="text-center">Cantidad de clientes</h4>
+              <h3 class="text-center">{{cliente.0}}</h3>
             </div>
           </div>
 
@@ -72,48 +72,48 @@
         <div class="col-2 mt-5">
           <div class="row">
             <div class="col text-center">
-              <i class="bi bi-collection"></i>
+              <i class="bi bi-collection" style="font-size: 22px;"></i>
             </div>
             <div class="col-9">
-              <p>Cantidad de prestamos pendientes</p>
-              <p>{{prestamo.0}}</p>
+              <h4 class="text-center">Cantidad prestamos pendientes</h4>
+              <h3 class="text-center">{{prestamo.0}}</h3>
             </div>
           </div>
         </div>
         <div class="col-2 mt-5">
           <div class="row">
             <div class="col text-center">
-              <i class="bi bi-collection-fill"></i>
+              <i class="bi bi-collection-fill" style="font-size: 22px;"></i>
             </div>
             <div class="col-9">
-              <p>Cobros realizados</p>
-              <p>{{cobro.0}}</p>
+              <h4 class="text-center">Cobros realizados</h4>
+              <h3 class="text-center">{{cobro.0}}</h3>
             </div>
           </div>
         </div>
         <div class="col-2 mt-5">
           <div class="row">
             <div class="col text-center">
-              <i class="bi bi-wallet"></i>
+              <i class="bi bi-wallet" style="font-size: 22px;"></i>
             </div>
             <div class="col-9">
-              <p>Monto por cobrar</p>
-              <p>{{restante.0}}</p>
+              <h4 class="text-center">Monto por cobrar</h4>
+              <h3 class="text-center">{{restante.0}}</h3>
 
             </div>
           </div>
         </div>
       <div class="row">
         <div class="col-3"></div>
-        <div class="col-4 text-center bg-primary text-white rounded">
+        <div class="col-9 text-center text-white rounded" style="background-color: #151E3D; color: white;">
           <h1 class="display-1 text-white"><span id="datetime"></span></h1>
           <h3 class=""><span id="date"></span></h3>
 
         </div>
-        <div class="col-5">
 
-        </div>
-
+      </div>
+      <div class="row">
+        <p></p>
       </div>
     </div>
 
