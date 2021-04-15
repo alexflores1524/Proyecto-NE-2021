@@ -171,7 +171,7 @@ def usuarios():
 @app.route('/reportes.html')
 def reportes():
     if 'usuarioIngresado' in session:
-        return redirect(url_for('reportes'))
+        return render_template('reportes.html', usuarioGlobal = session['usuarioIngresado'])
     else:
         return render_template('/login.html')
 

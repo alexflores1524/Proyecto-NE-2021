@@ -16,7 +16,7 @@ mysql = MySQL(app)
 @app.route('/')
 def login():
     if 'usuarioIngresado' in session:
-        return render_template('Inicio.html', usuarioGlobal = session['usuarioIngresado'])
+        return redirect(url_for('inicio'))
     else:
         return render_template('/login.html')
 
@@ -354,7 +354,7 @@ def borrar_usuarios(id):
 @app.route('/reportes.html')
 def reportes():
     if 'usuarioIngresado' in session:
-        return redirect(url_for('reportes'))
+        return render_template('reportes.html', usuarioGlobal = session['usuarioIngresado'])
     else:
         return render_template('/login.html')
 
