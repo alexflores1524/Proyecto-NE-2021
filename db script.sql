@@ -80,4 +80,6 @@ FROM prestamos
 INNER JOIN clientes on clientes.idCliente = prestamos.idCliente
 WHERE prestamos.idPrestamo = 1
 
+SELECT * FROM plazos WHERE fecha_pago < CURDATE()
+
 */

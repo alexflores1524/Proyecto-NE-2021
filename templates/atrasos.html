@@ -54,57 +54,39 @@
     </div>
     <div class="col-1"></div>
       <div class="col-6">
-        <p class="text-center" >Tabla de pagos atrasados</p>
-        <div class="p-3 border border-dark rounded">
-            <table class="table">
+        <p class="text-center" >Cobros atrasados</p>
+          <div class="p-3 border border-dark rounded">
+            <table class="table ">
                 <thead>
-                  <tr>
-                    <th scope="col">N°</th>
-                    <th scope="col">Cliente</th>
-                    <th scope="col">N° Prestamo</th>
-                    <th scope="col">Monto atrasado</th>
-                  </tr>
+                    <tr>
+                        <th scope="col">N° de Plazo</th>
+                        <th scope="col">Nombre cliente</th>
+                        <th scope="col">N° de Prestamo</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Fecha de pago</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>02145</td>
-                    <td>52417</td>
-                    <td>$2500.00</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>56874</td>
-                    <td>54268</td>
-                    <td>$1200.00</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>45646</td>
-                    <td>78524</td>
-                    <td>$1800.00</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>65874</td>
-                    <td>32548</td>
-                    <td>$4000.00</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>75412</td>
-                    <td>58745</td>
-                    <td>$2100.00</td>
-                  </tr>
+                    {%for atraso in atrasos%}
+                    <tr>
+                        <td>{{atraso.0}}</td>
+                        <td>{{atraso.1}} {{atraso.2}}</td>
+                        <td>{{atraso.3}}</td>
+                        <td>{{atraso.4}}</td>
+                        <td>{{atraso.5}}</td>
+                    </tr>
+                    {%endfor%}                       
                 </tbody>
             </table>
-        </div>
+          </div>
       </div>
       <div class="col-3 text-center pt-5">
           <div class="row p-4"></div>
-          <div>
-              <button type="button" class="btn btn-outline-primary">Filtrar pagos atrasados</button>
-          </div>
+          <form action="mostrar_atrasos" method="post">
+            <div>
+                <button type="submit" class="btn btn-outline-primary">Filtrar pagos atrasados</button>
+            </div>
+          </form>
       </div>
     </div>
   </div>
