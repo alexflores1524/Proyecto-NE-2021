@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <!-- Bootstrap Icons cdn -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <title>Prestamos</title>
+</head>
+
+<body style="background-color: #C0DAD0;">
+    <div class="container">
+        <nav class="navbar">
+            <a class="navbar-brand" href="../Inicio.html">
+                <img src="../static/gespres_logo.png" width="100" height="100" alt="">
+            </a>
+            <a class="navbar-brand disable" href="#">
+                <p class=" pt-5">Hola, {{usuarioGlobal}}</p>
+                <form action="logout" method="post"><button type="submit" class="btn btn-outline-primary">Cerrar sesión</button></form> 
+            </a>
+        </nav>
+    </div>
+    <hr>
+    <div class="container pt-5">
+        <div class="row">
+            <div class="col-2">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link " aria-current="page" href="../Inicio.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../clientes.html">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../prestamos.html">Prestamos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../cobros.html">Cobros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../atrasos.html">Atrasos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../usuarios.html">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../reportes.html">Reportes</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-9">
+                <p class="text-center" >Reporte de cobros realizados</p>
+                <div class="p-3 border border-dark rounded">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th scope="col">N° de Prestamo</th>
+                                <th scope="col">Nombre cliente</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Fecha de cobro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for reporte in reportes%}
+                            <tr>
+                                <td>{{reporte.0}}</td>
+                                <td>{{reporte.1}}</td>
+                                <td>{{reporte.2}}</td>
+                                <td>{{reporte.3}}</td>
+                            </tr>
+                            {%endfor%}                       
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-9">
+                <form class="row" action="reporte_cobros_imprimir" method="post">
+                    <div class="col-3"></div>
+                    <div class="col-3">
+                        <p>Fecha de inicio: </p>
+                        <input type="date" name="fechaInicio">
+                    </div>                  
+                    <div class="col-3">
+                        <p>Fecha fin: </p>
+                        <input type="date" name="fechaFin">
+                    </div>
+                    <div class="col-3">
+                        <button type="submit"  class="btn btn-outline-primary mt-3">Imprimir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>

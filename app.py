@@ -140,7 +140,7 @@ def prestamos():
         mycursor.execute("SELECT * FROM prestamos WHERE is_active = 1")
         prestamoResult = mycursor.fetchall()
         mycursor.close()
-        cliente = ('','','')
+        cliente = ('','','','','')
         return render_template('prestamos.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente, prestamos = prestamoResult)
     else:
         return render_template('/login.html')    
@@ -150,7 +150,7 @@ def buscar_cliente_prestamos():
     if request.method == 'POST':
         id = request.form['idCliente']
         mycursor = mysql.connection.cursor()
-        mycursor.execute("SELECT * FROM clientes WHERE idCliente = %s", (id))
+        mycursor.execute("SELECT * FROM clientes WHERE idCliente = %s AND is_active = 1", (id))
         cliente = mycursor.fetchall()
         mycursor.execute("SELECT * FROM prestamos WHERE is_active = 1")
         prestamoResult = mycursor.fetchall()
@@ -209,7 +209,7 @@ def buscar_prestamo():
                                 prestamos.restante
                             FROM prestamos
                             INNER JOIN clientes on clientes.idCliente = prestamos.idCliente
-                            WHERE prestamos.idPrestamo = %s """, (id))
+                            WHERE prestamos.idPrestamo = %s AND prestamos.is_active = 1""", (id))
         prestamo = mycursor.fetchall()       
         if prestamo:
             mycursor.execute("SELECT * FROM plazos WHERE idPrestamo = %s AND is_active = 1", (id))
@@ -355,6 +355,98 @@ def borrar_usuarios(id):
 def reportes():
     if 'usuarioIngresado' in session:
         return render_template('reportes.html', usuarioGlobal = session['usuarioIngresado'])
+    else:
+        return render_template('/login.html')
+
+#REPORTE COBROS
+@app.route('/reporte_cobros', methods=['POST','GET'])
+def reporte_cobros():
+    if 'usuarioIngresado' in session:
+        if request.method == 'POST':
+            reportes = ('','','','','','','','')
+            return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
+        else:
+            return redirect(url_for('reportes'))
+    else:
+        return render_template('/login.html')
+    
+
+@app.route('/reporte_cobros_imprimir', methods=['POST','GET'])
+def reporte_cobros_imprimir():
+    if 'usuarioIngresado' in session:
+        if request.method == 'POST':
+            fechaInicio = request.form['fechaInicio']
+            fechaFin = request.form['fechaFin']
+            mycursor = mysql.connection.cursor()
+            mycursor.execute("""SELECT p.idPrestamo, cl.nombre, c.cantidad, c.fecha_cobro FROM cobros AS c INNER JOIN prestamos AS p ON p.idPrestamo = c.idPrestamo INNER JOIN clientes AS cl ON cl.idCliente = p.idCliente WHERE c.fecha_cobro BETWEEN %s AND %s """,(fechaInicio, fechaFin))
+            reportes = mycursor.fetchall()
+            mycursor.close()
+            if reportes:
+                return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
+            else:
+                return redirect(url_for('reporte_cobros'))
+        else:
+            return redirect(url_for('reportes'))
+    else:
+        return render_template('/login.html')
+
+#REPORTE CLIENTES
+@app.route('/reporte_clientes', methods=['POST','GET'])
+def reporte_clientes():
+    if 'usuarioIngresado' in session:
+        if request.method == 'POST':
+            reportes = ('','','','','','','','')
+            return render_template('reporte_clientes.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
+        else:
+            return redirect(url_for('reportes'))
+    else:
+        return render_template('/login.html')
+
+@app.route('/reporte_clientes_imprimir', methods=['POST','GET'])
+def reporte_clientes_imprimir():
+    if 'usuarioIngresado' in session:
+        if request.method == 'POST':
+            mycursor = mysql.connection.cursor()
+            mycursor.execute("""SELECT c.nombre,c.apellido, p.cantidad, p.fecha_prestamo, p.abono, p.restante FROM prestamos as p inner JOIN clientes AS c ON c.idCliente = p.idCliente""")
+            reportes = mycursor.fetchall()
+            mycursor.close()
+            if reportes:
+                return render_template('reporte_clientes.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
+            else:
+                 return redirect(url_for('reporte_clientes'))
+        else:
+            return redirect(url_for('reportes'))
+    else:
+        return render_template('/login.html')
+
+#REPORTE PRESTAMOS
+@app.route('/reporte_prestamos', methods=['POST','GET'])
+def reporte_prestamos():
+    if 'usuarioIngresado' in session:
+        if request.method == 'POST':
+            return render_template('reporte_prestamos.html', usuarioGlobal = session['usuarioIngresado'])
+        else:
+            return redirect(url_for('reportes'))
+    else:
+        return render_template('/login.html')
+    
+
+@app.route('/reporte_prestamos_imprimir', methods=['POST','GET'])
+def reporte_prestamos_imprimir():
+    if 'usuarioIngresado' in session:
+        if request.method == 'POST':
+            fechaInicio = request.form['fechaInicio']
+            fechaFin = request.form['fechaFin']
+            mycursor = mysql.connection.cursor()
+            mycursor.execute("""SELECT * FROM prestamos where is_active = 0 AND fecha_prestamo BETWEEN %s AND %s """,(fechaInicio, fechaFin))
+            reportes = mycursor.fetchall()
+            mycursor.close()
+            if reportes:
+                return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
+            else:
+                return redirect(url_for('reporte_prestamos'))
+        else:
+            return redirect(url_for('reportes'))
     else:
         return render_template('/login.html')
 
