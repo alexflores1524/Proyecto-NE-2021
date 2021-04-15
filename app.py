@@ -33,7 +33,8 @@ def login_autentication():
         if userResult:
             if password == userResult[0][2]:
                 session['usuarioIngresado'] = request.form['user']
-                return render_template('Inicio.html', usuarioGlobal = session['usuarioIngresado'])
+                return redirect(url_for('inicio'))
+                #return render_template('Inicio.html', usuarioGlobal = session['usuarioIngresado'])
         else:
             return redirect(url_for('login'))
     return redirect(url_for('login'))
@@ -46,10 +47,24 @@ def logout():
 @app.route('/Inicio.html')
 def inicio():
     if 'usuarioIngresado' in session:
-        
-        return render_template('Inicio.html', usuarioGlobal = session['usuarioIngresado'])
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("SELECT COUNT(nombre) FROM clientes WHERE is_active = 1")
+        cliente = mycursor.fetchall()
+        mycursor.execute("SELECT COUNT(idPrestamo) FROM prestamos WHERE is_active = 1")
+        prestamo = mycursor.fetchall()
+        mycursor.execute("SELECT SUM(cantidad) FROM cobros")
+        cobro = mycursor.fetchall()
+        mycursor.execute("SELECT SUM(restante) FROM prestamos")
+        restante = mycursor.fetchall()
+        mycursor.close()
+        if cliente:
+            return render_template('inicio.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente[0],prestamo = prestamo[0], cobro = cobro[0], restante = restante[0])
+        else:
+            cliente = ('','No existente','No existente')
+            return render_template('inicio.html', usuarioGlobal = session['usuarioIngresado'], cliente = cliente, prestamos = prestamoResult)
     else:
         return render_template('/login.html')
+
 #************************************************************
 
 #**************************CLIENTES**************************
@@ -200,7 +215,6 @@ def buscar_prestamo():
             mycursor.execute("SELECT * FROM plazos WHERE idPrestamo = %s AND is_active = 1", (id))
             plazos = mycursor.fetchall()
             mycursor.close()
-            print(plazos[0])
             return render_template('cobros.html', usuarioGlobal = session['usuarioIngresado'], prestamo = prestamo[0], plazos = plazos)
         else:
             mycursor.close()
@@ -216,16 +230,16 @@ def registrar_cobro():
         monto = float(request.form['monto'])
         mycursor = mysql.connection.cursor()
         
-        mycursor.execute("SELECT idPrestamo FROM plazos WHERE idPlazo = %s", (idPlazo))
+        mycursor.execute("SELECT idPrestamo FROM plazos WHERE idPlazo = %s", [idPlazo])
         plazo = mycursor.fetchall()
-        idPrestamo = plazo[0]
+        idPrestamo = plazo[0][0]
         mycursor.execute("INSERT INTO cobros (idPrestamo, idPlazo, cantidad, fecha_cobro) VALUES (%s, %s, %s, %s)",(idPrestamo, idPlazo, monto, fechaPago))
         mysql.connection.commit()
         
-        mycursor.execute("UPDATE plazos SET is_active = 0 WHERE idPlazo = %s", (idPlazo))
+        mycursor.execute("UPDATE plazos SET is_active = 0 WHERE idPlazo = %s", [idPlazo])
         mysql.connection.commit()
         
-        mycursor.execute("SELECT abono,restante FROM prestamos WHERE idPrestamo = %s", (idPrestamo))
+        mycursor.execute("SELECT abono,restante FROM prestamos WHERE idPrestamo = %s", [idPrestamo])
         prestamo = mycursor.fetchall()
         abono = prestamo[0][0]
         restante = prestamo[0][1]
@@ -247,14 +261,34 @@ def registrar_cobro():
 
 #**************************ATRASOS***************************
 
-
 @app.route('/atrasos.html')
 def atrasos():
     if 'usuarioIngresado' in session:
-        return render_template('atrasos.html', usuarioGlobal = session['usuarioIngresado'])
+        atrasos = ('','','','','','')
+        return render_template('atrasos.html', usuarioGlobal = session['usuarioIngresado'], atrasos = atrasos)
     else:
         return render_template('/login.html')
 
+@app.route('/mostrar_atrasos', methods=['POST','GET'])
+def mostrar_atrasos():
+    if request.method == 'POST':
+        mycursor = mysql.connection.cursor()
+        mycursor.execute("""SELECT plazos.idPlazo, clientes.nombre, clientes.apellido, plazos.idPrestamo, plazos.       subtotal, plazos.fecha_pago
+                            FROM plazos
+                            INNER JOIN prestamos ON prestamos.idPrestamo = plazos.idPrestamo
+                            INNER JOIN clientes ON clientes.idCliente = prestamos.idCliente
+                            WHERE fecha_pago < CURDATE() AND plazos.is_active = 1
+                         """)
+        atrasos = mycursor.fetchall()
+        mycursor.close()
+        if atrasos:
+            return render_template('atrasos.html', usuarioGlobal = session['usuarioIngresado'], atrasos = atrasos)
+        else:
+            return redirect(url_for('atrasos'))
+    else:
+        return redirect(url_for('atrasos'))
+
+   
 #*************************************************************
 
 #**************************USUARIOS**************************
@@ -320,7 +354,7 @@ def borrar_usuarios(id):
 @app.route('/reportes.html')
 def reportes():
     if 'usuarioIngresado' in session:
-        return render_template('usuarios.html', usuarioGlobal = session['usuarioIngresado'])
+        return redirect(url_for('reportes'))
     else:
         return render_template('/login.html')
 
