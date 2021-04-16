@@ -443,10 +443,10 @@ def reporte_prestamos_imprimir():
             reportes = mycursor.fetchall()
             mycursor.close()
             if reportes:
-                return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
+                return render_template('reporte_prestamos.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
             else:
                 reportes = ('','','','','','','','')
-                return render_template('reporte_cobros.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
+                return render_template('reporte_prestamos.html', usuarioGlobal = session['usuarioIngresado'], reportes = reportes)
         else:
             return redirect(url_for('reportes'))
     else:
